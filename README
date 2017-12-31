@@ -1,0 +1,91 @@
+/SRC	Scripts for Hybrid document experiment
+/ThirdParty	Third party code
+
+
+
+Dependencies:
+
+- python 3.5
+- my branch of the keras package: www.github.com/NPoe/keras
+- theano, sklearn, nltk, numpy, progressbar2, pickle
+
+git clone www.github.com/NPoe/keras
+cd keras
+python3 setup.py install
+
+(sudo/admin rights might be needed, install locally if this is an issue by setting --prefix)
+(make sure you are using the theano backend in keras)
+
+
+
+Preparations:
+
+# modify SRC/config.py and set the following variables
+
+# directory where models, results etc. can be stored
+WORKDIR = ".."
+
+# text format pre-trained embedding
+# format per line:
+# word dim1 dim2 ... dim300
+# any 300 dimensional embedding is fine, we use GloVe
+GLOVEPATH = "../Glove/glove.840B.300d.txt"
+
+# json files containing sentiment analysis review data
+# format per line:
+# {'text': '...', 'stars': [1-5], ...}
+# split into train, dev and test must be done manually
+TRAINJSON = "../Data/reviews.PA.train"
+DEVJSON = "../Data/reviews.PA.dev"
+TESTJSON = "../Data/reviews.PA.test"
+
+
+
+Usage:
+
+python3 main.py prepare [yelp|newsgroup]
+
+# this builds the necessary data dumps for every corpus in <workdir>/Inputs/<corpus>
+# this includes:
+
+<workdir>/Inputs/<corpus>/X # input arrays, contains the entries "train", "test", "dev", "hybrid"
+<workdir>/Inputs/<corpus>/raw_documents # like X, but untokenized documents
+<workdir>/Inputs/<corpus>/tokenized_documents # like X, but word tokenized documents
+<workdir>/Inputs/<corpus>/Y # like X, but gold class
+<workdir>/Inputs/<corpus>/GT # pointing game ground truths for hybrid documents
+<workdir>/Inputs/<corpus>/worddict # dictionary mapping words to embedding indices
+<workdir>/Inputs/<corpus>/classdict # dictionary mapping class labels to output indices
+
+4) python3 main.py datatest [yelp|newsgroup]
+
+# checks whether array shapes match up and whether generators work as expected
+# displays a number of samples along with gold labels
+
+5) python3 main.py train [CNN|GRU|LSTM] [yelp|newsgroup]
+
+# train <architecture> on <corpus> and store the resulting model in <workdir>/Models/<architecture>_<corpus>
+
+6) python3 main.py eval [CNN|GRU|LSTM] [yelp|newsgroup]
+
+# evaluate the model on development and test data
+
+7) python3 main.py predict [CNN|GRU|LSTM] [yelp|newsgroup]
+
+# predict scores for test data and hybrid documents
+
+8.a) python3 main.py score [CNN|GRU|LSTM] [yelp|newsgroup] [gamma|omission...]
+
+# use explanation method <score> (e.g. omission) on the model <architecture>
+
+8.b) python3 main.py score_k [CNN|GRU|LSTM] [yelp|newsgroup] [gamma|omission...]
+
+# like 8.a), but only explain the class that was predicted in 7)
+# This reduces runtime, especially in the 20 class scenario
+
+9.a) python3 main.py pointinggame [CNN|GRU|LSTM] [yelp|newsgroup] [gamma|omission...]
+
+# play the pointing game on the explanations made by method <score> for model <architecture> on the hybrid documents of <corpus>
+
+9.b) python3 main.py pointinggame_k [CNN|GRU|LSTM] [yelp|newsgroup] [gamma|omission...]
+
+# like 9.a), in case you have used score_k before
