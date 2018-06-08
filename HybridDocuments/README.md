@@ -14,15 +14,16 @@ that we used with our train/dev/test split.
 
 ## MODELS
 
-Prior to training, you will need to download the pre-trained embeddings here [http://nlp.stanford.edu/data/glove.840B.300d.zip].
+Prior to training, you will need to download the pre-trained embeddings [here](http://nlp.stanford.edu/data/glove.840B.300d.zip).
 Then set this config variable:
 
-GLOVEPATH = 
+GLOVEPATH = \<path to embedding txt file\>
 
 For reproducibility, you may want to download the models from our original experiment by running prep_models.sh.
 
 ## RUNNING THE EXPERIMENT
 
+```
 cd SRC
 main.py prepare <corpus>
 main.py train <architecture> <corpus> # train model, unless you are using our models
@@ -30,11 +31,13 @@ main.py eval <architecture> <corpus> # evaluate primary model performance on tes
 main.py score <architecture> <corpus> <method> # pre-calculation of relevance scores
 main.py pointinggame <architecture> <corpus> <method> # evaluate relevance maximum
 main.py manual <architecture> <method> # evaluate relevance maximum on manual benchmark
-
+```
+where
+```
 <corpus> = yelp|newsgroup
-<architecture> = CNN|GRU|LSTM|QGRU|QLSTM
-<method> = limsse_raw|limsse_class|lrp|deeplift|decomp|omit-1||occ-1|grad_raw_dot| ... (see SRC/util.py for list)
-
+<architecture> = CNN|GRU|LSTM|QGRU|QLSTM  
+<method> = limsse_raw|limsse_class|lrp|deeplift|decomp|omit-1||occ-1|grad_raw_dot| ... (see SRC/util.py for full list)
+```
 ## KNOWN ISSUES
 
 There used to be a groundtruth-prediction mismatch on trimmed documents (i.e., documents with a length > 1000 words). 
@@ -45,5 +48,6 @@ been fixed in the present codebase.
 
 [1] Poerner, N., Roth, B., Schütze, H. (2018). Evaluating neural network explanation methods using hybrid
 documents and morphosyntactic agreement. ACL.
+
 [2] Mohseni, S., Ragan, E.D. (2018) A Human-Grounded Evaluation Benchmark for Local Explanations of Machine Learning. 
 arXiv preprint arXiv:1801.05075
