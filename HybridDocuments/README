@@ -1,0 +1,50 @@
+Code for hybrid document experiment in [1].
+
+### CORPORA ###
+
+The 20 newsgroups corpus is available from sklearn and will be downloaded by running main.py prepare newsgroup.
+The manual evaluation benchmark [2] can be downloaded by running prep_manual (subject to availability of 
+the original repository).
+
+The 10th yelp dataset challenge is no longer available on-line, and we do not have the license to publish it. 
+However, the majority of relevant reviews (203756 of 206338 to be exact) are present in the 11'th
+dataset challenge (https://www.yelp.com/dataset/download), and hopefully also in future editions. Note that
+we only used reviews from the Pennsylvania area (state = 'PA').
+
+Use the file reviews.json to reproduce our train/dev/test split and set the following variables in SRC/config.py:
+
+TRAINJSON = 
+DEVJSON =
+TESTJSON = 
+
+### MODELS ###
+
+Prior to training, you will need to download the pre-trained GloVe embeddings from http://nlp.stanford.edu/data/glove.840B.300d.zip 
+and set this config variable:
+
+GLOVEPATH = 
+
+For reproducibility, you may want to download the models from the original experiment by running prep_models.sh.
+
+### RUNNING THE EXPERIMENT ###
+
+cd SRC
+main.py prepare <corpus>
+main.py train <architecture> <corpus> # train model, unless you are using our models
+main.py eval <architecture> <corpus> # evaluate primary model performance on test set
+main.py score <architecture> <corpus> <method> # pre-calculation of relevance scores
+main.py pointinggame <architecture> <corpus> <method> # evaluate relevance maximum
+main.py manual <architecture> <method> # evaluate relevance maximum on manual benchmark
+
+<corpus> = yelp|newsgroup
+<architecture> = CNN|GRU|LSTM|QGRU|QLSTM
+<method> = limsse_raw|limsse_class|lrp|deeplift|decomp|omit-1||occ-1|grad_raw_dot| ... (see SRC/util.py for list)
+
+NOTE: There used to be a groundtruth-prediction mismatch on trimmed documents (i.e., documents with a length 
+above 1000 words). This means that results reported in [1] underestimate pointing game accuracy on very long documents.
+This bug has been fixed in the present codebase.
+
+### PAPER ###
+
+[1] Poerner, N., Roth, B., Schütze, H. (2018). Evaluating neural network explanation methods using hybrid
+documents and morphosyntactic agreement. ACL.

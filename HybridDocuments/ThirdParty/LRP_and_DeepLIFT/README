@@ -1,0 +1,28 @@
+# Description
+
+This code release contains an implementation of Layer-wise Relevance Propagation (LRP) and DeepLIFT for (Q)LSTM, (Q)GRU and CNN as used for the paper [Evaluating Neural Network Explanation Methods using Hybrid Documents and Morphosyntactic Agreement by N. Poerner, B. Roth and H. Schütze, 2018](https://arxiv.org/abs/1801.06422). It is based on the LRP\_for\_LSTM package by Leila Arras released for the paper [Explaining Recurrent Neural Network Predictions in Sentiment Analysis by L. Arras, G. Montavon, K.-R. Müller and W. Samek, 2017](http://aclweb.org/anthology/W/W17/W17-5221.pdf).
+
+## Dependencies
+
+Python>=3.5 + Numpy
+
+## Citation
+
+    @INPROCEEDINGS{arras2017,
+        title     = {Explaining Recurrent Neural Network Predictions in Sentiment Analysis},
+        author    = {Leila Arras and Gr{\'e}goire Montavon and Klaus-Robert M{\"u}ller and Wojciech Samek},
+        booktitle = {Proceedings of the EMNLP 2017 Workshop on Computational Approaches to Subjectivity, Sentiment and Social Media Analysis},
+        year      = {2017},
+        pages     = {159-168},
+        publisher = {Association for Computational Linguistics},
+        url       = {http://aclweb.org/anthology/W/W17/W17-5221.pdf}
+    }
+
+    @INPROCEEDINGS{poerner2018,
+        title={Evaluating Neural Network Explanation Methods using Hybrid Documents and Morphological Prediction},
+        author={Poerner, Nina and Sch{\"u}tze, Hinrich and Roth, Benjamin},
+        booktitle={Proceedings of the 56th Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers)},
+        volume={1},
+        year={2018}
+    }
+
